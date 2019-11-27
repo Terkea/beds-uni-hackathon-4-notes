@@ -5,3 +5,4 @@ werkzeug
 Flask
 requests
 SQLAlchemy
+flask_wtf
