@@ -53,7 +53,7 @@ def login():
             print(f"[INFO] Logged in")
             token = json.loads(request.text)['token']
             session['session_token'] = token
-            return redirect(url_for('login'))
+            return redirect(url_for('index'))
         else:
             print(f"[ERROR] {request.text}")
             flash("Wrong email or password")
