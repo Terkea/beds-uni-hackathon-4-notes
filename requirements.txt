@@ -1,0 +1,7 @@
+flask_script
+flask_migrate
+PyJWT
+werkzeug
+Flask
+requests
+SQLAlchemy
