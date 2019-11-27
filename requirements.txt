@@ -6,3 +6,4 @@ Flask
 requests
 SQLAlchemy
 flask_wtf
+mysql
