@@ -22,7 +22,7 @@ def require_login():
     :rtype: redirect
     """
     allowed_routes = ['login', 'register']
-    if request.endpoint not in allowed_routes and 'session_token' not in session:
+    if request.endpoint not in allowed_routes and 'token' not in session:
         return redirect(url_for('login'))
 
 
@@ -31,13 +31,23 @@ def logout():
     """
     delete the session token
     """
-    del session['session_token']
+    del session['token']
     return redirect(url_for('login'))
 
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/categories/')
+def categories():
+    return render_template('categories.html')
+
+
+@app.route('/notes/')
+def notes():
+    return render_template('notes.html')
 
 
 @app.route('/login/', methods=['GET', 'POST'])
@@ -52,7 +62,7 @@ def login():
         if request.status_code == 200:
             print(f"[INFO] Logged in")
             token = json.loads(request.text)['token']
-            session['session_token'] = token
+            session['token'] = token
             return redirect(url_for('index'))
         else:
             print(f"[ERROR] {request.text}")
@@ -98,4 +108,4 @@ def register():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
