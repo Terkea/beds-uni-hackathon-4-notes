@@ -9,5 +9,79 @@
 {% endblock %}
 
 {% block body_content %}
-<h1>Categories</h1>
+
+<br>
+<div class="container-fluid">
+<div class="card">
+  <div class="card-header">
+    <h1 class="card-title">Categories</h1>
+    <div class="card-tools">
+        <div class="input-group input-group-sm">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-block btn-info" data-toggle="modal" data-target="#modal-create-category">
+                    Create new one
+                </button>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body table-responsive p-0">
+    <table class="table table-head-fixed">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Notes</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      {% for foo in data['categories'] %}
+        <tr>
+          <td>{{ foo.name }}</td>
+          <td>120</td>
+          <td>
+              <button class="btn btn-default">Update</button>
+              <a href="/delete_category/{{ foo.public_id }}" class="btn btn-danger">Delete</a>
+          </td>
+        </tr>
+
+      {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+  <!-- /.card-body -->
+</div>
+<!-- /.card -->
+</div>
+
+
+<div class="modal fade" id="modal-create-category">
+    <form action="/categories/", method="post">
+        {{ form.csrf_token }}
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Create new Category</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" name="category_name" class="form-control" placeholder="Category Name">
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-info">Submit</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+    </form>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 {% endblock %}

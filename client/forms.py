@@ -14,3 +14,7 @@ class registerForm(FlaskForm):
 class loginForm(FlaskForm):
     email = StringField('email', validators=[DataRequired(), Email()])
     password = StringField('password', validators=[DataRequired()])
+
+
+class createCategory(FlaskForm):
+    category_name = StringField('Category Name', validators=[DataRequired()])

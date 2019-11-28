@@ -3,7 +3,7 @@ import json
 import requests
 from flask import Flask, render_template, redirect, url_for, flash, request, session
 
-from client.forms import registerForm, loginForm
+from client.forms import registerForm, loginForm, createCategory
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SEX_BOT'
@@ -40,9 +40,36 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/categories/')
+@app.route('/categories/', methods=['GET', 'POST'])
 def categories():
-    return render_template('categories.html')
+    form = createCategory()
+    request = requests.get(f"{API_URL}category/", headers={"token": session['token']})
+
+    if request.status_code == 200:
+        data = request.json()
+
+
+    if form.validate_on_submit():
+        name = str(form.category_name.data)
+        post_data = {
+            "name": name
+        }
+        requests.post(f"{API_URL}category/", headers={"token": session['token']}, json=post_data)
+        if request.status_code == 200:
+            print('[INFO] New category created')
+            return redirect(url_for('categories'))
+    return render_template('categories.html', data=data, form=form)
+
+
+
+# todo: when a category is deleted pop up a model and ask the user what he wants to do with the notes. ex, delete all,
+# move them to another category or let them without category
+@app.route('/delete_category/<string:public_id>', methods=['GET', 'POST'])
+def delete_category(public_id):
+    print('deleted ' + public_id)
+    request = requests.delete(f"{API_URL}category/{public_id}", headers={"token": session['token']})
+    print(request.status_code)
+    return redirect(url_for('categories'))
 
 
 @app.route('/notes/')
@@ -58,7 +85,7 @@ def login():
         email = str(form.email.data)
         password = str(form.password.data)
 
-        request = requests.get("http://127.0.0.1:5001/api/login/", auth=(email, password))
+        request = requests.get(f"{API_URL}login/", auth=(email, password))
         if request.status_code == 200:
             print(f"[INFO] Logged in")
             token = json.loads(request.text)['token']
