@@ -41,7 +41,7 @@
           <td>{{ foo.name }}</td>
           <td>
               <button class="btn btn-default" data-toggle="modal" data-target="#update_{{ foo.public_id }}">Update</button>
-              <button class="btn btn-danger" data-toggle="modal" data-target="#delete{{ foo.public_id }}">Delete</button>
+              <button class="btn btn-danger" data-toggle="modal" data-target="#delete_{{ foo.public_id }}">Delete</button>
               <!-- /.update modal -->
                 <div class="modal fade" id="update_{{ foo.public_id }}">
                     <form action="/categories/", method="post">
@@ -71,7 +71,7 @@
                 <!-- /.modal -->
 
               <!-- /.delete modal -->
-                <div class="modal fade" id="delete{{ foo.public_id }}">
+                <div class="modal fade" id="delete_{{ foo.public_id }}">
                     <form action="/categories/", method="post">
                         {{ form3.csrf_token }}
                         <div class="modal-dialog">
@@ -87,7 +87,7 @@
                                     <label>Before we can go ahead and delete this category we have to know what are
                                     your intentions regarding the notes that belongs to it</label>
                                     <select name="notes_action" class="form-control">
-                                      <option value="0">Delete all the notes</option>
+                                      <option value="0">Delete all the notes and the category</option>
                                       <option value="1">Delete the category and keep the notes uncategorized</option>
                                     </select>
                                 </div>

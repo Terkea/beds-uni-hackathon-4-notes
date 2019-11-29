@@ -86,16 +86,38 @@ def categories():
         public_id = str(form3.public_id.data)
         notes_action = str(form3.notes_action.data)
 
-        # _all_notes =
+        post_data = {
+            "public_id": public_id
+        }
 
-        # delete all the notes and the category
-        if notes_action == 0:
-            pass
-        # uncategorize all the notes and delete the category
-        if notes_action == 1:
-            pass
+        _all_notes = requests.get(f"{API_URL}notes_by_category/{public_id}",
+                                  headers={"token": session['token']}, json=post_data)
 
+        if _all_notes.status_code == 200:
+            print('[INFO] Notes available in category')
+            if notes_action == '0':
+                print('[INFO]  Delete all the notes and the category')
+                for note in _all_notes.json()['notes']:
+                    print(f"DELETING {note['public_id']}")
+                    requests.delete(f"{API_URL}note/{note['public_id']}",
+                                    headers={"token": session['token']})
+                requests.delete(f"{API_URL}category/{public_id}",
+                                headers={"token": session['token']})
+                return redirect(url_for('categories'))
 
+            if notes_action == '1':
+                print('[INFO] uncategorize all the notes and delete the category')
+                for note in _all_notes.json()['notes']:
+                    update_data = {
+                        "category_id": None
+                    }
+                    print(f"UPDATING {note['public_id']}")
+                    requests.put(f"{API_URL}note/{note['public_id']}",
+                                 headers={"token": session['token']}, json=update_data)
+
+                requests.delete(f"{API_URL}category/{public_id}",
+                                headers={"token": session['token']})
+                return redirect(url_for('categories'))
 
     return render_template('categories.html', data=data, form=form, form2=form2, form3=form3)
 
