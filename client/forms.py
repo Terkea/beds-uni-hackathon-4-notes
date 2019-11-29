@@ -18,3 +18,12 @@ class loginForm(FlaskForm):
 
 class createCategory(FlaskForm):
     category_name = StringField('Category Name', validators=[DataRequired()])
+
+
+class updateCategory(FlaskForm):
+    public_id = StringField('Public ID', validators=[DataRequired()])
+    category_name = StringField('Category Name', validators=[DataRequired()])
+
+class deleteCategory(FlaskForm):
+    public_id = StringField('Public ID', validators=[DataRequired()])
+    notes_action = StringField('Action Name', validators=[DataRequired()])

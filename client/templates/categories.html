@@ -31,7 +31,6 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>Notes</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -40,12 +39,75 @@
       {% for foo in data['categories'] %}
         <tr>
           <td>{{ foo.name }}</td>
-          <td>120</td>
           <td>
-              <button class="btn btn-default">Update</button>
-              <a href="/delete_category/{{ foo.public_id }}" class="btn btn-danger">Delete</a>
+              <button class="btn btn-default" data-toggle="modal" data-target="#update_{{ foo.public_id }}">Update</button>
+              <button class="btn btn-danger" data-toggle="modal" data-target="#delete{{ foo.public_id }}">Delete</button>
+              <!-- /.update modal -->
+                <div class="modal fade" id="update_{{ foo.public_id }}">
+                    <form action="/categories/", method="post">
+                        {{ form2.csrf_token }}
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Update Category</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" name="public_id" value="{{ foo.public_id }}">
+                                <input type="text" name="category_name" value="{{ foo.name }}" class="form-control" placeholder="Category Name">
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              <button type="submit" id="form2-submit" name="form2-submit" class="btn btn-info">Submit</button>
+                            </div>
+                          </div>
+                          <!-- /.modal-content -->
+                        </div>
+                    </form>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+              <!-- /.delete modal -->
+                <div class="modal fade" id="delete{{ foo.public_id }}">
+                    <form action="/categories/", method="post">
+                        {{ form3.csrf_token }}
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Delete Category</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Before we can go ahead and delete this category we have to know what are
+                                    your intentions regarding the notes that belongs to it</label>
+                                    <select name="notes_action" class="form-control">
+                                      <option value="0">Delete all the notes</option>
+                                      <option value="1">Delete the category and keep the notes uncategorized</option>
+                                    </select>
+                                </div>
+                                <input type="hidden" name="public_id" value="{{ foo.public_id }}">
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              <button type="submit" id="form3-submit" name="form3-submit" class="btn btn-danger">Submit</button>
+                            </div>
+                          </div>
+                          <!-- /.modal-content -->
+                        </div>
+                    </form>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
           </td>
         </tr>
+
+
 
       {% endfor %}
       </tbody>
@@ -74,7 +136,7 @@
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-info">Submit</button>
+              <button type="submit" id="form1-submit" name="form1-submit" class="btn btn-info">Submit</button>
             </div>
           </div>
           <!-- /.modal-content -->

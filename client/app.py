@@ -3,7 +3,7 @@ import json
 import requests
 from flask import Flask, render_template, redirect, url_for, flash, request, session
 
-from client.forms import registerForm, loginForm, createCategory
+from client.forms import registerForm, loginForm, createCategory, updateCategory, deleteCategory
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SEX_BOT'
@@ -43,23 +43,61 @@ def index():
 @app.route('/categories/', methods=['GET', 'POST'])
 def categories():
     form = createCategory()
-    request = requests.get(f"{API_URL}category/", headers={"token": session['token']})
+    form2 = updateCategory()
+    form3 = deleteCategory()
 
-    if request.status_code == 200:
-        data = request.json()
+    query = requests.get(f"{API_URL}category/", headers={"token": session['token']})
 
+    # get all the categories
+    if query.status_code == 200:
+        data = query.json()
 
-    if form.validate_on_submit():
+    # CREATE NEW CATEGORY
+    if "form1-submit" in request.form and form.validate_on_submit():
         name = str(form.category_name.data)
+
         post_data = {
             "name": name
         }
-        requests.post(f"{API_URL}category/", headers={"token": session['token']}, json=post_data)
-        if request.status_code == 200:
+
+        create_query = requests.post(f"{API_URL}category/", headers={"token": session['token']}, json=post_data)
+        if create_query.status_code == 201:
             print('[INFO] New category created')
             return redirect(url_for('categories'))
-    return render_template('categories.html', data=data, form=form)
 
+    # UPDATE CATEGORY
+    if "form2-submit" in request.form and form2.validate_on_submit():
+        public_id = str(form2.public_id.data)
+        name = str(form2.category_name.data)
+
+        post_data = {
+            "name": name
+        }
+
+        update_query = requests.put(f"{API_URL}category/{public_id}",
+                                    headers={"token": session['token']}, json=post_data)
+
+        if update_query.status_code == 201:
+            print('[INFO] Category updated')
+            return redirect(url_for('categories'))
+
+    # DELETE CATEGORY
+    if "form3-submit" in request.form and form3.validate_on_submit():
+        public_id = str(form3.public_id.data)
+        notes_action = str(form3.notes_action.data)
+
+        # _all_notes =
+
+        # delete all the notes and the category
+        if notes_action == 0:
+            pass
+        # uncategorize all the notes and delete the category
+        if notes_action == 1:
+            pass
+
+
+
+    return render_template('categories.html', data=data, form=form, form2=form2, form3=form3)
 
 
 # todo: when a category is deleted pop up a model and ask the user what he wants to do with the notes. ex, delete all,
