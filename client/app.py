@@ -40,6 +40,11 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/create_note/')
+def create_note():
+    return render_template('create_note.html')
+
+
 @app.route('/categories/', methods=['GET', 'POST'])
 def categories():
     form = createCategory()
