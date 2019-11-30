@@ -207,6 +207,13 @@ def notes_without_category():
     notes = requests.get(f"{API_URL}notes_with_no_category/", headers={"token": session['token']}).json()['notes']
     return render_template('notes.html', categories=categories, notes=notes)
 
+
+@app.route('/load', methods=['GET', 'POST'])
+def load():
+    if request.args.get("keyword") != "null" or request.args.get("category") != "null":
+        notes = requests.get(f"{API_URL}search_note/{request.args.get('keyword')}/{request.args.get('category')}")
+
+
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     form = loginForm()
