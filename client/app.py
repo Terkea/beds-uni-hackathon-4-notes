@@ -1,9 +1,10 @@
 import json
 
+import jwt
 import requests
 from flask import Flask, render_template, redirect, url_for, flash, request, session
 
-from client.forms import registerForm, loginForm, createCategory, updateCategory, deleteCategory
+from client.forms import registerForm, loginForm, createCategory, updateCategory, deleteCategory, createNote
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SEX_BOT'
@@ -40,9 +41,33 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/create_note/')
+@app.route('/create_note/', methods=['GET', 'POST'])
 def create_note():
-    return render_template('create_note.html')
+    form = createNote()
+    categories = requests.get(f"{API_URL}category/", headers={"token": session['token']}).json()['categories']
+
+    if form.validate_on_submit():
+        title = str(form.title.data)
+        category = int(form.category.data)
+        content = str(form.content.data)
+
+        post_data = {
+            "title": title,
+            "category_id": category,
+            "content": content,
+        }
+
+        print(post_data)
+
+        query = requests.post(f"{API_URL}note/", headers={"token": session['token']}, json=post_data)
+
+        if query.status_code == 201:
+            print("[INFO] New note created")
+            return redirect(url_for('notes'))
+    else:
+        print('nooo')
+
+    return render_template('create_note.html', categories=categories, form=form)
 
 
 @app.route('/categories/', methods=['GET', 'POST'])
@@ -139,7 +164,13 @@ def delete_category(public_id):
 
 @app.route('/notes/')
 def notes():
-    return render_template('notes.html')
+    post_data = {
+        "token": session['token']
+    }
+
+    categories = requests.get(f"{API_URL}category/", headers={"token": session['token']}).json()['categories']
+    notes = requests.get(f"{API_URL}note/", headers={"token": session['token']}).json()['notes']
+    return render_template('notes.html', categories=categories, notes=notes)
 
 
 @app.route('/login/', methods=['GET', 'POST'])

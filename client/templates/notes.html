@@ -10,5 +10,47 @@
 {% endblock %}
 
 {% block body_content %}
-<h1>Notes</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="container">
+        <br>
+            <a href="{{ url_for('create_note') }}" class="btn btn-default">Create new post</a>
+            <div class="row" style="margin-top:2rem;">
+                <div class="col-md-3">
+                    <div class="btn-group-vertical" style="width: 100%">
+                        <button type="button" class="btn btn-info disabled">Categories</button>
+                        {% for foo in categories %}
+                            <button type="button" class="btn btn-default">{{ foo.name }}</button>
+                        {% endfor %}
+                    </div>
+
+
+                </div>
+                <div class="col-md-9">
+                    {% for foo in notes %}
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">{{ foo.title }}</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="ribbon-wrapper ribbon-lg">
+                                <div class="ribbon bg-info">
+                                    <p>{{ foo.category_name }}</p>
+                                </div>
+                            </div>
+                                {{ foo.content }}
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-success btn-xs">view</button>
+                                <button class="btn btn-info btn-xs">update</button>
+                                <button class="btn btn-danger btn-xs">delete</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

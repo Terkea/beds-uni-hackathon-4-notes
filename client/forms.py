@@ -24,6 +24,12 @@ class updateCategory(FlaskForm):
     public_id = StringField('Public ID', validators=[DataRequired()])
     category_name = StringField('Category Name', validators=[DataRequired()])
 
+
 class deleteCategory(FlaskForm):
     public_id = StringField('Public ID', validators=[DataRequired()])
     notes_action = StringField('Action Name', validators=[DataRequired()])
+
+class createNote(FlaskForm):
+    title = StringField("Title", validators=[DataRequired()])
+    category = StringField("Category", validators=[DataRequired()])
+    content = StringField("Content", validators=[DataRequired()])
