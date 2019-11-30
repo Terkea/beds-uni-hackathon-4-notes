@@ -67,7 +67,7 @@ def create_note():
     else:
         print('nooo')
 
-    return render_template('create_note.html', categories=categories, form=form)
+    return render_template('create_note.html', categories=categories, form=form, note=None)
 
 
 @app.route('/categories/', methods=['GET', 'POST'])
@@ -167,6 +167,31 @@ def notes():
     categories = requests.get(f"{API_URL}category/", headers={"token": session['token']}).json()['categories']
     notes = requests.get(f"{API_URL}note/", headers={"token": session['token']}).json()['notes']
     return render_template('notes.html', categories=categories, notes=notes)
+
+
+@app.route('/note/<string:public_id>', methods=['GET', 'POST'])
+def note(public_id):
+    form = createNote()
+    categories = requests.get(f"{API_URL}category/", headers={"token": session['token']}).json()['categories']
+    note = requests.get(f"{API_URL}note/{public_id}", headers={"token": session['token']}).json()['notes']
+
+
+    if form.validate_on_submit():
+        title = str(form.title.data)
+        category = int(form.category.data)
+        content = str(form.content.data)
+
+        post_data = {
+            "title": title,
+            "category_id": category,
+            "content": content,
+        }
+
+        query = requests.put(f"{API_URL}note/{note['public_id']}", headers={"token": session['token']}, json=post_data)
+        if query.status_code == 201:
+            print(f'[INFO] note {public_id} has been updated')
+            return redirect(url_for('notes'))
+    return render_template('create_note.html', form=form, note=note, categories=categories)
 
 
 @app.route('/notes/<string:category_public_id>')
