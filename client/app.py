@@ -164,14 +164,23 @@ def delete_category(public_id):
 
 @app.route('/notes/')
 def notes():
-    post_data = {
-        "token": session['token']
-    }
-
     categories = requests.get(f"{API_URL}category/", headers={"token": session['token']}).json()['categories']
     notes = requests.get(f"{API_URL}note/", headers={"token": session['token']}).json()['notes']
     return render_template('notes.html', categories=categories, notes=notes)
 
+
+@app.route('/notes/<string:category_public_id>')
+def notes_by_category(category_public_id):
+    categories = requests.get(f"{API_URL}category/", headers={"token": session['token']}).json()['categories']
+    notes = requests.get(f"{API_URL}notes_by_category/{category_public_id}", headers={"token": session['token']}).json()['notes']
+    return render_template('notes.html', categories=categories, notes=notes)
+
+
+@app.route('/notes/category=none')
+def notes_without_category():
+    categories = requests.get(f"{API_URL}category/", headers={"token": session['token']}).json()['categories']
+    notes = requests.get(f"{API_URL}notes_with_no_category/", headers={"token": session['token']}).json()['notes']
+    return render_template('notes.html', categories=categories, notes=notes)
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
