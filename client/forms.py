@@ -32,7 +32,7 @@ class deleteCategory(FlaskForm):
 
 class createNote(FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
-    category = StringField("Category", validators=[DataRequired()])
+    category = StringField("Category")
     content = StringField("Content", validators=[DataRequired()])
 
 
