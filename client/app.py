@@ -4,7 +4,7 @@ import jwt
 import requests
 from flask import Flask, render_template, redirect, url_for, flash, request, session
 
-from client.forms import registerForm, loginForm, createCategory, updateCategory, deleteCategory, createNote
+from client.forms import registerForm, loginForm, createCategory, updateCategory, deleteCategory, createNote, searchNote
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SEX_BOT'
@@ -162,11 +162,33 @@ def delete_category(public_id):
     return redirect(url_for('categories'))
 
 
-@app.route('/notes/')
+@app.route('/notes/', methods=['GET', 'POST'])
 def notes():
+    form = searchNote()
+
+    if form.validate_on_submit():
+        keyword = str(form.keyword.data)
+        category_id = str(form.category_id.data)
+        return redirect(f"/search_notes/{keyword}/{category_id}")
+    else:
+        print("BAG PULA")
+
     categories = requests.get(f"{API_URL}category/", headers={"token": session['token']}).json()['categories']
     notes = requests.get(f"{API_URL}note/", headers={"token": session['token']}).json()['notes']
-    return render_template('notes.html', categories=categories, notes=notes)
+    return render_template('notes.html', categories=categories, notes=notes, form=form)
+
+
+@app.route('/search_notes/<string:keyword>/<string:category_public_id>', methods=['GET', 'POST'])
+def search_notes(keyword, category_public_id):
+    form = searchNote()
+
+    if form.validate_on_submit():
+        keyword = str(form.keyword.data)
+        category_id = str(form.category_id.data)
+        return redirect(f"/search_notes/{keyword}/{category_id}")
+    categories = requests.get(f"{API_URL}category/", headers={"token": session['token']}).json()['categories']
+    notes = requests.get(f"{API_URL}search_note/{keyword}/{category_public_id}", headers={"token": session['token']}).json()['notes']
+    return render_template('notes.html', categories=categories, notes=notes, form=form)
 
 
 @app.route('/note/<string:public_id>', methods=['GET', 'POST'])
@@ -196,16 +218,29 @@ def note(public_id):
 
 @app.route('/notes/<string:category_public_id>')
 def notes_by_category(category_public_id):
+    form = searchNote()
+
+    if form.validate_on_submit():
+        keyword = str(form.keyword.data)
+        category_id = str(form.category_id.data)
+        return redirect(f"/search_notes/{keyword}/{category_id}")
     categories = requests.get(f"{API_URL}category/", headers={"token": session['token']}).json()['categories']
     notes = requests.get(f"{API_URL}notes_by_category/{category_public_id}", headers={"token": session['token']}).json()['notes']
-    return render_template('notes.html', categories=categories, notes=notes)
+    return render_template('notes.html', categories=categories, notes=notes, form=form)
 
 
 @app.route('/notes/category=none')
 def notes_without_category():
+    form = searchNote()
+
+    if form.validate_on_submit():
+        keyword = str(form.keyword.data)
+        category_id = str(form.category_id.data)
+        return redirect(f"/search_notes/{keyword}/{category_id}")
+
     categories = requests.get(f"{API_URL}category/", headers={"token": session['token']}).json()['categories']
     notes = requests.get(f"{API_URL}notes_with_no_category/", headers={"token": session['token']}).json()['notes']
-    return render_template('notes.html', categories=categories, notes=notes)
+    return render_template('notes.html', categories=categories, notes=notes, form=form)
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():

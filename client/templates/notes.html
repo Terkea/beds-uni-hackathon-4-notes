@@ -16,12 +16,19 @@
         <br>
         <div class="row" style="margin-top:2rem;">
               <div class="col-3" style="width: 100%">
-                <a href="{{ url_for('create_note') }}" class="btn btn-secondary" style="width: 100%">Create new note</a>
+                <a href="{{ url_for('create_note') }}" class="btn bg-info" style="width: 100%">Create new note</a>
               </div>
               <div class="col-9">
-                <form class="form-inline" >
+                <form action="/notes/", method="post">
+                    {{ form.csrf_token }}
                   <div class="input-group" style="width: 100%">
-                    <input class="form-control form-control-navbar" type="text" placeholder="Search note " aria-label="Search">
+                    <input class="form-control form-control-navbar" type="text" name="keyword" placeholder="Search note " aria-label="Search">
+                      <select class="form-control" name="category_id">
+                            <option value="all">All Categories</option>
+                            {% for foo in categories %}
+                                <option value="{{ foo.public_id }}">{{ foo.name }}</option>
+                            {% endfor %}
+                      </select>
                     <div class="input-group-append">
                       <button class="btn btn-navbar btn-default" type="submit">
                         <i class="fas fa-search text-default"></i>
@@ -35,7 +42,7 @@
             <div class="row" style="margin-top:2rem;">
                 <div class="col-md-3">
                     <div class="btn-group-vertical" style="width: 100%">
-                        <button type="button" class="btn btn-info disabled">Categories</button>
+                        <button type="button" class="btn bg-navy color-palette disabled">Categories</button>
                         {% for foo in categories %}
                             <a href="/notes/{{ foo.public_id }}" type="button" class="btn btn-default">{{ foo.name }}</a>
                         {% endfor %}
@@ -53,7 +60,7 @@
                             <div class="card-body">
                                 {% if foo.category_name %}
                                 <div class="ribbon-wrapper ribbon-lg">
-                                    <div class="ribbon bg-primary">
+                                    <div class="ribbon bg-danger">
                                         <p>{{ foo.category_name }}</p>
                                     </div>
                                 </div>

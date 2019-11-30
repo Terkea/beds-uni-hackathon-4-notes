@@ -29,7 +29,13 @@ class deleteCategory(FlaskForm):
     public_id = StringField('Public ID', validators=[DataRequired()])
     notes_action = StringField('Action Name', validators=[DataRequired()])
 
+
 class createNote(FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
     category = StringField("Category", validators=[DataRequired()])
     content = StringField("Content", validators=[DataRequired()])
+
+
+class searchNote(FlaskForm):
+    keyword = StringField('Keyword', validators=[DataRequired()])
+    category_id = StringField('Category ID', validators=[DataRequired()])
