@@ -28,3 +28,9 @@ For the web interface I been using:
 
 - `AdminLTE` which is a responsive bootstrap prebuild theme
 - `Summernote` as the text editor for creating notes
+
+
+If I had more time I would had used:
+- `react.js` on the front end 
+- firebase real time database from google
+- lazy loading
