@@ -87,7 +87,6 @@ def index():
     except:
         pass
     stats = [no_categories, no_notes, average, uncategorized_noted]
-    print(stats)
 
 
     # CREATE NEW CATEGORY
