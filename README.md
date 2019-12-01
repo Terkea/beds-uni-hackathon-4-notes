@@ -21,4 +21,4 @@ and the algorithm used is `sha256`
  like to tweak the database schema. To keep track of all those changes I used
   `flask-migrate`
   
-
+- Token authentication using `JSON Web Token (JWT)`
