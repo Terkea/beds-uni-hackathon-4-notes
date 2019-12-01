@@ -48,7 +48,6 @@
                             <option value="{{ foo.id }}">{{ foo.name }}</option>
                             {% endif %}
                         {% endfor %}
-                        <option value="{{ None }}">No category</option>
                     </select>
 
 
@@ -72,7 +71,6 @@
                         {% for foo in categories %}
                             <option value="{{ foo.id }}">{{ foo.name }}</option>
                         {% endfor %}
-                            <option value="{{ None }}">No category</option>
                     </select>
                     <br>
                   <div class="mb-3">

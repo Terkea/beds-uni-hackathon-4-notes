@@ -7,7 +7,7 @@ from flask import Flask, render_template, redirect, url_for, flash, request, ses
 from client.forms import registerForm, loginForm, createCategory, updateCategory, deleteCategory, createNote, searchNote
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'SEX_BOT'
+app.config['SECRET_KEY'] = 'SUPER_MEGA_SECURE_KEY'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 API_URL = 'http://127.0.0.1:5001/api/'
@@ -43,7 +43,10 @@ def create_note():
 
     if form.validate_on_submit():
         title = str(form.title.data)
-        category = int(form.category.data)
+        if type(form.category.data) is None:
+            category = None
+        else:
+            category = str(form.category.data)
         content = str(form.content.data)
 
         post_data = {

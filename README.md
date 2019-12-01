@@ -22,3 +22,9 @@ and the algorithm used is `sha256`
   `flask-migrate`
   
 - Token authentication using `JSON Web Token (JWT)`
+
+### Client Side
+For the web interface I been using:
+
+- `AdminLTE` which is a responsive bootstrap prebuild theme
+- `Summernote` as the text editor for creating notes
