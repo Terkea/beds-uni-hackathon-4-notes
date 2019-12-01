@@ -178,8 +178,6 @@ def notes():
         keyword = str(form.keyword.data)
         category_id = str(form.category_id.data)
         return redirect(f"/search_notes/{keyword}/{category_id}")
-    else:
-        print("BAG PULA")
 
     categories = requests.get(f"{API_URL}category/", headers={"token": session['token']}).json()['categories']
     notes = requests.get(f"{API_URL}note/", headers={"token": session['token']}).json()['notes']
