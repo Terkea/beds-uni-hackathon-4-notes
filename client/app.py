@@ -36,11 +36,6 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-
 @app.route('/create_note/', methods=['GET', 'POST'])
 def create_note():
     form = createNote()
@@ -70,8 +65,8 @@ def create_note():
     return render_template('create_note.html', categories=categories, form=form, note=None)
 
 
-@app.route('/categories/', methods=['GET', 'POST'])
-def categories():
+@app.route('/', methods=['GET', 'POST'])
+def index():
     form = createCategory()
     form2 = updateCategory()
     form3 = deleteCategory()
@@ -81,6 +76,19 @@ def categories():
     # get all the categories
     if query.status_code == 200:
         data = query.json()
+
+
+    no_categories = len(data['categories'])
+    no_notes = len(requests.get(f"{API_URL}note/", headers={"token": session['token']}).json()['notes'])
+    uncategorized_noted = len(requests.get(f"{API_URL}notes_with_no_category/", headers={"token": session['token']}).json()['notes'])
+    average = 0
+    try:
+        average = no_categories / no_notes
+    except:
+        pass
+    stats = [no_categories, no_notes, average, uncategorized_noted]
+    print(stats)
+
 
     # CREATE NEW CATEGORY
     if "form1-submit" in request.form and form.validate_on_submit():
@@ -93,7 +101,7 @@ def categories():
         create_query = requests.post(f"{API_URL}category/", headers={"token": session['token']}, json=post_data)
         if create_query.status_code == 201:
             print('[INFO] New category created')
-            return redirect(url_for('categories'))
+            return redirect(url_for('index'))
 
     # UPDATE CATEGORY
     if "form2-submit" in request.form and form2.validate_on_submit():
@@ -109,7 +117,7 @@ def categories():
 
         if update_query.status_code == 201:
             print('[INFO] Category updated')
-            return redirect(url_for('categories'))
+            return redirect(url_for('index'))
 
     # DELETE CATEGORY
     if "form3-submit" in request.form and form3.validate_on_submit():
@@ -133,7 +141,7 @@ def categories():
                                     headers={"token": session['token']})
                 requests.delete(f"{API_URL}category/{public_id}",
                                 headers={"token": session['token']})
-                return redirect(url_for('categories'))
+                return redirect(url_for('index'))
 
             if notes_action == '1':
                 print('[INFO] uncategorize all the notes and delete the category')
@@ -147,9 +155,9 @@ def categories():
 
                 requests.delete(f"{API_URL}category/{public_id}",
                                 headers={"token": session['token']})
-                return redirect(url_for('categories'))
+                return redirect(url_for('index'))
 
-    return render_template('categories.html', data=data, form=form, form2=form2, form3=form3)
+    return render_template('categories.html', data=data, form=form, form2=form2, form3=form3, stats=stats)
 
 
 @app.route('/delete_note/<string:public_id>', methods=['GET', 'POST'])
@@ -198,7 +206,10 @@ def note(public_id):
 
     if form.validate_on_submit():
         title = str(form.title.data)
-        category = int(form.category.data)
+        if type(form.category.data) is None:
+            category = None
+        else:
+            category = str(form.category.data)
         content = str(form.content.data)
 
         post_data = {

@@ -13,6 +13,68 @@
 
 <br>
 <div class="container-fluid">
+
+        <div class="col-md-12" style="margin-top: 2rem">
+            <div class="row">
+          <div class="col-lg-3 col-6">
+            <!-- small card -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>{{ stats[0] }}</h3>
+
+                <p>Categories</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small card -->
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3>{{ stats[1] }}</h3>
+
+                <p>Notes</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small card -->
+            <div class="small-box bg-warning">
+              <div class="inner">
+                <h3>{{ stats[2] }}</h3>
+
+                <p>Average notes / category</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-user-plus"></i>
+              </div>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small card -->
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>{{ stats[3] }}</h3>
+
+                <p>Uncategorized notes</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chart-pie"></i>
+              </div>
+            </div>
+          </div>
+          <!-- ./col -->
+        </div>
+        </div>
+
 <div class="card card-outline card-secondary">
   <div class="card-header">
     <h1 class="card-title">My Categories</h1>
@@ -49,7 +111,7 @@
               </button>
               <!-- /.update modal -->
                 <div class="modal fade" id="update_{{ foo.public_id }}">
-                    <form action="/categories/", method="post">
+                    <form action="/", method="post">
                         {{ form2.csrf_token }}
                         <div class="modal-dialog">
                           <div class="modal-content">
@@ -77,7 +139,7 @@
 
               <!-- /.delete modal -->
                 <div class="modal fade" id="delete_{{ foo.public_id }}">
-                    <form action="/categories/", method="post">
+                    <form action="/", method="post">
                         {{ form3.csrf_token }}
                         <div class="modal-dialog">
                           <div class="modal-content">
@@ -126,7 +188,7 @@
 
 
 <div class="modal fade" id="modal-create-category">
-    <form action="/categories/", method="post">
+    <form action="/", method="post">
         {{ form.csrf_token }}
         <div class="modal-dialog">
           <div class="modal-content">
