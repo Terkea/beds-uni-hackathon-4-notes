@@ -72,10 +72,34 @@
                             </div>
                             <div class="card-footer">
                                 <a href="/note/{{ foo.public_id }}" class="btn btn-info btn-xs"><i class="fas fa-eye"></i></a>
-                                <a href="#" class="btn btn-danger btn-xs"><i class="fas fa-trash"></i></a>
+                                <a href="#" data-toggle="modal" data-target="#delete_{{ foo.public_id }}" class="btn btn-danger btn-xs"><i class="fas fa-trash"></i></a>
                                 <p class="float-right text-muted text-sm">{{ foo.created_date }}</p>
                             </div>
                         </div>
+
+                        <div class="modal fade" id="delete_{{ foo.public_id }}">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h4 class="modal-title">Delete note</h4>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you wanna delete that note?</p>
+                                </div>
+                                <div class="modal-footer justify-content-between">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                  <a href="/delete_note/{{ foo.public_id }}" class="btn btn-danger">Delete</a>
+                                </div>
+                              </div>
+                              <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        <!-- /.modal -->
+
                     {% endfor %}
                 </div>
             </div>

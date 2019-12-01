@@ -152,14 +152,12 @@ def categories():
     return render_template('categories.html', data=data, form=form, form2=form2, form3=form3)
 
 
-# todo: when a category is deleted pop up a model and ask the user what he wants to do with the notes. ex, delete all,
-# move them to another category or let them without category
-@app.route('/delete_category/<string:public_id>', methods=['GET', 'POST'])
+@app.route('/delete_note/<string:public_id>', methods=['GET', 'POST'])
 def delete_category(public_id):
-    print('deleted ' + public_id)
-    request = requests.delete(f"{API_URL}category/{public_id}", headers={"token": session['token']})
+    print('[INFO] DELETED note ' + public_id)
+    request = requests.delete(f"{API_URL}note/{public_id}", headers={"token": session['token']})
     print(request.status_code)
-    return redirect(url_for('categories'))
+    return redirect(url_for('notes'))
 
 
 @app.route('/notes/', methods=['GET', 'POST'])
