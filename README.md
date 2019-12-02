@@ -29,8 +29,14 @@ For the web interface I been using:
 - `AdminLTE` which is a responsive bootstrap prebuild theme
 - `Summernote` as the text editor for creating notes
 
+All the inputs are validated and sterilized before they get processed to prevent `sql injection` or `XSS`
 
 If I had more time I would had used:
 - `react.js` on the front end 
 - firebase real time database from google
 - lazy loading
+
+### Requirements
+To install all the requirements necessarily for this project just run
+
+`pip install -r requirements.txt` 
