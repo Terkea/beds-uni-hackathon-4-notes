@@ -13,6 +13,11 @@ My intentions for this project are:
 I have chosen to use a `client-server architecture` because it 
 makes the whole app easier to scale and maintain.
 
+
+![alt text](https://raw.githubusercontent.com/Terkea/beds-uni-hackathon-4-notes/master/source_files/1.png)
+
+![alt text](https://raw.githubusercontent.com/Terkea/beds-uni-hackathon-4-notes/master/source_files/2.png)
+
 ### Server Side
 - The encryption for passwords is done by `werkzeug.security` module 
 and the algorithm used is `sha256`
